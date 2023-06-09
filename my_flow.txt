@@ -1,0 +1,72 @@
+Flow and Architecture of the Project:
+
+1. The user provides the path of a .pptx file as input to the script.
+2. The script uses the "python-pptx" package to parse the presentation and extract its data.
+3. The script goes through each slide separately:
+    It extracts all the text from the text boxes on the slide.
+    It creates a prompt for GPT by combining the extracted text from the slide.
+    It sends an asynchronous request to the OpenAI API using the gpt-3.5-turbo model, with a timeout for the response.
+    It extracts the AI's reply from the response.
+    If any error occurs during processing a slide, it saves an informative error message for that slide.
+4. The script gathers the explanations for all the slides in a list.
+5. The script saves the list of explanations in a JSON file with the same name as the original presentation.
+
+Files in the Project:
+
+1. main.py: This is the main script file that executes the entire process.
+2. pptx_helper.py: This file contains helper functions to parse the PowerPoint presentation using the "python-pptx" package.
+3. gpt_helper.py: This file contains helper functions to interact with the OpenAI GPT-3.5 API.
+4. utils.py: This file contains utility functions used by the main script.
+5. output.json: This file stores the explanations for each slide in JSON format.
+
+Order of files:
+
+powerpoint_explainer/
+  |- main.py
+  |- helpers/
+      |- pptx_helper.py
+      |- gpt_helper.py
+  |- utils.py
+  |- tests/
+      |- test_pptx_helper.py
+      |- test_gpt_helper.py
+      |- test_utils.py
+  |- docs/
+      |- ...
+  |- venv/
+  |- output.json
+
+
+Breakdown of the Project:
+
+main.py:
+Imports the necessary modules and packages.
+Defines the command-line interface using argparse to accept the path of the .pptx file as input.
+Parses the .pptx file using functions from pptx_helper.py.
+Initializes the list to store the explanations.
+Processes each slide asynchronously:
+Extracts the text from the slide using pptx_helper.py.
+Creates a prompt for GPT by combining the extracted text.
+Sends an asynchronous request to the GPT-3.5 API using gpt_helper.py.
+Extracts the AI's reply from the response.
+Handles errors and saves informative error messages, if any.
+Appends the explanation or error message to the list of explanations.
+Saves the list of explanations to output.json.
+
+pptx_helper.py:
+Contains functions to parse the .pptx file using the "python-pptx" package.
+Function: parse_presentation(pptx_path) - Parses the .pptx file and returns a list of slides.
+Function: extract_text(slide) - Extracts the text from a slide's text boxes and returns a list of text strings.
+
+gpt_helper.py:
+Contains functions to interact with the OpenAI GPT-3.5 API.
+Function: generate_explanation(prompt) - Sends a request to the GPT-3.5 API and returns the AI's reply.
+
+utils.py:
+Contains utility functions used by the main script.
+Function: save_json(file_path, data) - Saves the given data as JSON in the specified file path.
+Function: remove_whitespace(text) - Removes any weird whitespaces from the given text.
+Function: clean_text(text) - Cleans the text by removing unnecessary characters and extra whitespaces.
+
+output.json:
+The output file that stores the explanations for each slide in JSON format.
