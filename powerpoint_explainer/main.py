@@ -1,8 +1,11 @@
 import argparse
+import logging
 import json
-from helpers.pptx_helper import parse_presentation, extract_text
-from helpers.gpt_helper import generate_explanation
+from Helpers import parse_presentation, extract_text
+from Helpers import generate_explanation
 from utils import save_json
+
+logging.basicConfig(level=logging.INFO)
 
 
 def process_presentation(pptx_path, output_path):
@@ -23,7 +26,7 @@ def process_presentation(pptx_path, output_path):
         text = extract_text(slide)
         if text:
             prompt = "\n".join(text)
-            explanation = generate_explanation(prompt)
+            explanation = generate_explanation(prompt, slide.slide_id)
             explanations.append(explanation)
         else:
             explanations.append(None)
