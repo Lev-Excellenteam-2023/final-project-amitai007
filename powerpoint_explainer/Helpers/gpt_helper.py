@@ -25,7 +25,7 @@ def generate_explanation(prompt, slide_number):
         response = openai.Completion.create(
             engine='text-davinci-003',  # Use GPT-3.5 Turbo engine
             prompt=prompt,
-            max_tokens=100,  # Adjust as per your requirements
+            max_tokens=300,  # Adjust as per your requirements
             n=1,  # Number of responses to generate
             stop=None,  # Stop condition for the generated response
             timeout=10,  # Timeout in seconds (adjust as per your needs)
