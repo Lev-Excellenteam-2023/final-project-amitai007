@@ -10,8 +10,8 @@ def save_json(file_path, data):
         file_path (str): The path to save the JSON file.
         data: The data to be saved as JSON.
     """
-    with open(file_path, 'w') as f:
-        json.dump(data, f)
+    with open(file_path, 'w', encoding='utf-8') as f:  # Add encoding parameter
+        json.dump(data, f, ensure_ascii=False, indent=4)  # Use ensure_ascii=False
 
 
 def remove_whitespace(text):
@@ -37,6 +37,7 @@ def clean_text(text):
     Returns:
         str: The cleaned text.
     """
+
     cleaned_text = re.sub(r'\s+', ' ', text)  # Replace multiple whitespaces with a single space
     cleaned_text = re.sub(r'\n+', ' ', cleaned_text)  # Replace newlines with a space
     cleaned_text = cleaned_text.strip()  # Remove leading and trailing whitespaces
