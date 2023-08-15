@@ -1,8 +1,11 @@
 import argparse
+import logging
 import json
-from helpers.pptx_helper import parse_presentation, extract_text
-from helpers.gpt_helper import generate_explanation
-from utils import save_json
+from Helpers import parse_presentation, extract_text
+from Helpers import generate_explanation
+from utils import save_json, clean_text
+
+logging.basicConfig(level=logging.INFO)
 
 
 def process_presentation(pptx_path, output_path):
@@ -19,12 +22,15 @@ def process_presentation(pptx_path, output_path):
     slides = parse_presentation(pptx_path)
     explanations = []
 
-    for slide in slides:
+    for slide_number, slide in enumerate(slides, start=1):  # Enumerate to track slide numbers
         text = extract_text(slide)
         if text:
             prompt = "\n".join(text)
-            explanation = generate_explanation(prompt)
-            explanations.append(explanation)
+            explanation = generate_explanation(clean_text(prompt), slide_number)  # Clean text before generating
+            # Insert line breaks after each dot
+            explanation_with_line_breaks = explanation.replace('.\n\n', '.')
+
+            explanations.append(explanation_with_line_breaks)
         else:
             explanations.append(None)
 
