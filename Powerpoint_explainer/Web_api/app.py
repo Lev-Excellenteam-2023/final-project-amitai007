@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 import os
 import uuid
 import time
-from Powerpoint_explainer.Client.client import WebAPIClient  # Import the client you'll create later
+from Powerpoint_explainer.Client.client import WebAPIClient
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'

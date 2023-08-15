@@ -1,11 +1,11 @@
 import os
 import time
-from Powerpoint_explainer.Helpers.pptx_helper import parse_presentation, extract_text
-from Powerpoint_explainer.Helpers.gpt_helper import generate_explanation
+
+from Powerpoint_explainer.Helpers import parse_presentation, extract_text, generate_explanation
 from Powerpoint_explainer.utils import save_json
 
-UPLOAD_FOLDER = 'uploads'
-OUTPUT_FOLDER = 'outputs'
+UPLOAD_FOLDER = '../uploads'
+OUTPUT_FOLDER = '../outputs'
 SLEEP_INTERVAL = 10  # seconds
 
 
@@ -21,18 +21,20 @@ def process_uploaded_files():
             slides = parse_presentation(pptx_path)
             explanations = []
 
-            for slide in slides:
+            for slide_number, slide in enumerate(slides, start=1):  # Enumerate slides with their numbers
                 text = extract_text(slide)
                 if text:
                     prompt = "\n".join(text)
-                    explanation = generate_explanation(prompt)
+                    explanation = generate_explanation(prompt, slide_number)  # Provide slide_number
                     explanations.append(explanation)
                 else:
                     explanations.append(None)
 
             save_json(output_path, explanations)
             print(f"Explanations saved to {output_path}")
-            os.remove(pptx_path)  # Remove processed file
+
+            # Remove the processed PowerPoint file from the UPLOAD_FOLDER
+            os.remove(pptx_path)
 
         time.sleep(SLEEP_INTERVAL)
 
